@@ -1,0 +1,23 @@
+
+include: package:flutter_lints/flutter.yaml
+
+code-style:
+
+
+analyzer:
+
+  errors:
+    prefer_const_constructors: error
+    always_use_package_imports: error
+    prefer_single_quotes: error
+    avoid_print: error
+    unused_import: error
+
+
+linter:
+  rules:
+    always_use_package_imports: true
+    avoid_print: true
+    prefer_single_quotes: true
+
+
