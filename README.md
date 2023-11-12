@@ -1,16 +1,18 @@
-# todo_flutter_yt
+# Todo
 
-A new Flutter project.
+In this app, we are going to learn about different databases and statemanagements.
 
-## Getting Started
+Database:
+1) SQflite
+2) Hive
+3) Floor
+4) ObjectedBox
 
-This project is a starting point for a Flutter application.
+State Managements:
+1) Provider
+2) Riverpod
+3) Getx
+4) Bloc
+5) Mobx
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+We will also learn about TDD and linter rules in this project.
