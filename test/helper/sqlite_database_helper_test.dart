@@ -1,78 +1,65 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:todo_flutter_yt/helper/sqlite_database_helper.dart';
+import 'package:todo_flutter_yt/utils/constant/constant.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
+Future main() async {
+  final newTodo = {
+    columnTitle: 'Testing',
+    columnDescription: 'Sample Description',
+  };
+  final updatedTodo = {
+    columnTitle: 'Testing Updated',
+    columnDescription: 'Sample Description',
+  };
+  late Database database;
 
-void main() {
-  group('SQLiteDatabaseHelper Tests', () {
-    late SQLiteDatabaseHelper dbHelper;
+  // Setup sqflite_common_ffi for flutter test
+  setUpAll(() async {
+    // Initialize FFI
+    sqfliteFfiInit();
+    // Change the default factory
+    databaseFactory = databaseFactoryFfi;
 
-    setUp(() {
-      dbHelper = SQLiteDatabaseHelper();
+    database = await openDatabase(inMemoryDatabasePath, version: 1,
+        onCreate: (db, version) async {
+          await db.execute('''
+          CREATE TABLE $table (
+            $columnId INTEGER PRIMARY KEY AUTOINCREMENT,
+            $columnTitle TEXT NOT NULL,
+            $columnDescription TEXT NOT NULL
+          )
+          ''');
+        });
+  });
+
+  group('Database Test', () {
+    test('sqflite version', () async {
+      expect(await database.getVersion(), 1);
     });
 
-    test('Database Initialization', () async {
-      final db = await dbHelper.init();
-      expect(db, isNotNull);
+    test('add todo to database', () async {
+      var i = await database.insert(table, newTodo);
+      var p = await database.query(table);
+      expect(p.length, i);
+      expect(p, [{columnId: 1, columnTitle: 'Testing', columnDescription: 'Sample Description'}]);
     });
 
-    test('Insert and Query Rows', () async {
-      final rowToInsert = {
-        SQLiteDatabaseHelper.columnTitle: 'Test Title',
-        SQLiteDatabaseHelper.columnDescription: 'Test Description',
-      };
-      final insertedRowId = await dbHelper.insert(rowToInsert);
-
-      final rows = await dbHelper.queryAllRows();
-      expect(rows, isNotNull);
-      expect(rows, isList);
-      expect(rows, hasLength(1));
-
-      final retrievedRow = rows[0];
-      expect(retrievedRow[SQLiteDatabaseHelper.columnId], equals(insertedRowId));
-      expect(retrievedRow[SQLiteDatabaseHelper.columnTitle], equals('Test Title'));
-      expect(retrievedRow[SQLiteDatabaseHelper.columnDescription], equals('Test Description'));
+    test('update first Item', () async {
+      await database.update(table, updatedTodo, where: '$columnId = ?', whereArgs: [1]);
+      var p = await database.query(table);
+      expect(p.first[columnTitle], 'Testing Updated');
     });
 
-    test('Update Row', () async {
-      final rowToInsert = {
-        SQLiteDatabaseHelper.columnTitle: 'Test Title',
-        SQLiteDatabaseHelper.columnDescription: 'Test Description',
-      };
-      final insertedRowId = await dbHelper.insert(rowToInsert);
-
-      final updatedRow = {
-        SQLiteDatabaseHelper.columnId: insertedRowId,
-        SQLiteDatabaseHelper.columnTitle: 'Updated Title',
-        SQLiteDatabaseHelper.columnDescription: 'Updated Description',
-      };
-      final rowsUpdated = await dbHelper.update(updatedRow);
-      expect(rowsUpdated, equals(1));
-
-      final rows = await dbHelper.queryAllRows();
-      expect(rows, isNotNull);
-      expect(rows, isList);
-      expect(rows, hasLength(1));
-
-      final retrievedRow = rows[0];
-      expect(retrievedRow[SQLiteDatabaseHelper.columnId], equals(insertedRowId));
-      expect(retrievedRow[SQLiteDatabaseHelper.columnTitle], equals('Updated Title'));
-      expect(retrievedRow[SQLiteDatabaseHelper.columnDescription], equals('Updated Description'));
+    test('delete the first Item', () async {
+      await database.delete(table, where: '$columnId = ?', whereArgs: [1]);
+      var p = await database.query(table);
+      expect(p.length, 0);
     });
 
-    test('Delete Row', () async {
-      final rowToInsert = {
-        SQLiteDatabaseHelper.columnTitle: 'Test Title',
-        SQLiteDatabaseHelper.columnDescription: 'Test Description',
-      };
-      final insertedRowId = await dbHelper.insert(rowToInsert);
-
-      final rowsDeleted = await dbHelper.delete(insertedRowId);
-      expect(rowsDeleted, equals(1));
-
-      final rows = await dbHelper.queryAllRows();
-      expect(rows, isNotNull);
-      expect(rows, isList);
-      expect(rows, hasLength(0));
+    test('Close db', () async {
+      await database.close();
+      expect(database.isOpen, false);
     });
+
   });
 }
