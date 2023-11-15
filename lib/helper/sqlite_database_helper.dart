@@ -32,24 +32,20 @@ class SQLiteDatabaseHelper{
           ''');
   }
 
-  Future<int> insert(Map<String, dynamic> row) async {
-    final db = await database;
+  Future<int> insert(Map<String, dynamic> row, Database db) async {
     return await db.insert(table, row);
   }
 
-  Future<List<Map<String, dynamic>>> queryAllRows() async {
-    final db = await database;
+  Future<List<Map<String, dynamic>>> queryAllRows(Database db) async {
     return await db.query(table);
   }
 
-  Future<int> queryRowCount() async {
-    final db = await database;
+  Future<int> queryRowCount(Database db) async {
     final results = await db.rawQuery('SELECT COUNT(*) FROM $table');
     return Sqflite.firstIntValue(results) ?? 0;
   }
 
-  Future<int> update(Map<String, dynamic> row) async {
-    final db = await database;
+  Future<int> update(Map<String, dynamic> row, Database db) async {
     int id = row[columnId];
     return await db.update(
       table,
@@ -59,12 +55,19 @@ class SQLiteDatabaseHelper{
     );
   }
 
-  Future<int> delete(int id) async {
-    final db = await database;
+  Future<int> delete(int id, Database db) async {
     return await db.delete(
       table,
       where: '$columnId = ?',
       whereArgs: [id],
     );
+  }
+
+  Future<void> clearTable(Database db) async {
+    await db.rawDelete('DELETE FROM $table');
+  }
+
+  Future<void> deleteTable(Database db) async {
+    await db.execute('DROP TABLE IF EXISTS $table');
   }
 }
