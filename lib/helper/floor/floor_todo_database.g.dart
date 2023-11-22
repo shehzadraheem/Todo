@@ -153,14 +153,30 @@ class _$TodoDao extends TodoDao {
   }
 
   @override
-  Future<void> insertTodo(TodoEntity todoEntity) async {
-    await _todoEntityInsertionAdapter.insert(
+  Future<TodoEntity?> getTodoById(int id) async {
+    return _queryAdapter.query('SELECT * FROM todo_table WHERE id = ?1',
+        mapper: (Map<String, Object?> row) => TodoEntity(
+            id: row['id'] as int?,
+            title: row['title'] as String,
+            description: row['description'] as String),
+        arguments: [id]);
+  }
+
+  @override
+  Future<void> deleteTable() async {
+    await _queryAdapter.queryNoReturn('DROP TABLE IF EXISTS todo_table');
+  }
+
+  @override
+  Future<int> insertTodo(TodoEntity todoEntity) {
+    return _todoEntityInsertionAdapter.insertAndReturnId(
         todoEntity, OnConflictStrategy.abort);
   }
 
   @override
-  Future<void> updateTodo(TodoEntity todoEntity) async {
-    await _todoEntityUpdateAdapter.update(todoEntity, OnConflictStrategy.abort);
+  Future<int> updateTodo(TodoEntity todoEntity) {
+    return _todoEntityUpdateAdapter.updateAndReturnChangedRows(
+        todoEntity, OnConflictStrategy.abort);
   }
 
   @override

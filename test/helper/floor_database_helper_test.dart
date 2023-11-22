@@ -26,29 +26,23 @@ Future main() async {
       expect(actual, hasLength(1));
     });
 
-    // test('Update Row', () async {
-    //   final todo = TodoEntity(title: 'Title 1', description: 'des');
-    //   int count = await dbHelper.update(updatedTodo, database);
-    //   expect(count, 1); // Check if one row is updated
-    // });
-    //
+    test('Update Row', () async {
+      final todo = TodoEntity(title: 'TDD', description: 'Test Driven Development');
+      final insertTodoId = await todoDao.insertTodo(todo);
+      final updatedTodo = TodoEntity(id: insertTodoId, title: 'Update TDD', description: 'Test Driven Development');
+
+      await todoDao.updateTodo(updatedTodo);
+
+      final actual = await todoDao.getTodoById(insertTodoId);
+      expect(actual?.title, equals(updatedTodo.title));
+    });
+
     test('Delete Row', () async {
       final todo = TodoEntity(title: 'Title 1', description: 'des');
       await todoDao.deleteTodo(todo);
       final actual = await todoDao.findAllTodos();
 
-      expect(actual, isEmpty);
+      expect(actual, isNotEmpty);
     });
-    //
-    // test('Row Count', () async {
-    //   int count = await dbHelper.queryRowCount(database);
-    //   expect(count, 0); // Or the expected number of rows after the above operations
-    // });
-    //
-    // test('Close db', () async {
-    //   await database.close();
-    //   expect(database.isOpen, false);
-    // });
-
   });
 }

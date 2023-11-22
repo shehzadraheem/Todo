@@ -8,11 +8,17 @@ abstract class TodoDao {
   Future<List<TodoEntity>> findAllTodos();
 
   @insert
-  Future<void> insertTodo(TodoEntity todoEntity);
+  Future<int> insertTodo(TodoEntity todoEntity);
 
   @update
-  Future<void> updateTodo(TodoEntity todoEntity);
+  Future<int> updateTodo(TodoEntity todoEntity);
 
   @delete
   Future<void> deleteTodo(TodoEntity todoEntity);
+
+  @Query('SELECT * FROM $table WHERE id = :id')
+  Future<TodoEntity?> getTodoById(int id);
+
+  @Query('DROP TABLE IF EXISTS $table')
+  Future<void> deleteTable();
 }
