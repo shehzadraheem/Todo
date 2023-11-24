@@ -169,6 +169,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.3"
+  cryptography:
+    dependency: transitive
+    description:
+      name: cryptography
+      sha256: d146b76d33d94548cf035233fbc2f4338c1242fa119013bead807d033fc4ae05
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.7.0"
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -217,6 +225,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
+  flat_buffers:
+    dependency: transitive
+    description:
+      name: flat_buffers
+      sha256: "23e2ced0d8e8ecdffbd9f267f49a668c74438393b9acaeac1c724123e3764263"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.5"
   floor:
     dependency: "direct main"
     description:
@@ -307,6 +323,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
+  http:
+    dependency: transitive
+    description:
+      name: http
+      sha256: "759d1a329847dd0f39226c688d3e06a6b8679668e350e2891a6474f8b4bb8525"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   http_multi_server:
     dependency: transitive
     description:
@@ -403,6 +427,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
+  objectbox:
+    dependency: "direct main"
+    description:
+      name: objectbox
+      sha256: "4b645c71771b87188442143a50c55ab238a8e60fe367b6a0968c0842292ffb30"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.1"
+  objectbox_flutter_libs:
+    dependency: "direct main"
+    description:
+      name: objectbox_flutter_libs
+      sha256: e9a3d8e3ce0d47d6fc942921ef0444a238cd4258e8fcefe13b994cf984a8bf61
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.1"
+  objectbox_generator:
+    dependency: "direct dev"
+    description:
+      name: objectbox_generator
+      sha256: aaffef7eb51b4d911bb00a7c52b19b55fe3e5a69de8ec56552cf35550a1e9beb
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.1"
   package_config:
     dependency: transitive
     description:
@@ -420,7 +468,7 @@ packages:
     source: hosted
     version: "1.8.3"
   path_provider:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path_provider
       sha256: a1aa8aaa2542a6bc57e381f132af822420216c80d4781f7aa085ca3229208aaa
