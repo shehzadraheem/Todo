@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todo_flutter_yt/helper/hive/hive_database.dart';
+import 'package:todo_flutter_yt/helper/object_box/to_do_service.dart';
 import 'package:todo_flutter_yt/utils/constant/app_text_constant.dart';
 import 'package:todo_flutter_yt/views/home_screen.dart';
 
@@ -8,6 +9,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   HiveDatabase().init();
+
+  ToDoService toDoService = ToDoService();
+  toDoService.initializeStore();
   runApp(const MyApp());
 }
 

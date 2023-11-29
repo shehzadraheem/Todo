@@ -6,11 +6,11 @@ class ToDoService {
   late final Store _store;
   late final Box<ToDo> _box;
 
-  ToDoService(Store store) {
-   _initializeStore();
+  ToDoService() {
+   //_initializeStore();
   }
 
-  Future<void> _initializeStore() async {
+  Future<void> initializeStore() async {
     final dir = await getApplicationDocumentsDirectory();
     _store = Store(getObjectBoxModel(), directory: '${dir.path}/objectbox');
     _box = _store.box<ToDo>();
