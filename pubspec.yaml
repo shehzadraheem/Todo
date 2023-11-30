@@ -44,6 +44,8 @@ dependencies:
   objectbox: ^2.3.1
   objectbox_flutter_libs: ^2.3.1
 
+  get: ^4.6.6
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
