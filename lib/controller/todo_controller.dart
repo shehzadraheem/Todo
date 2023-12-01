@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:todo_flutter_yt/helper/sqlite_database_helper.dart';
@@ -9,6 +10,7 @@ class TodoController extends GetxController {
   late TextEditingController descriptionController;
   late SQLiteDatabaseHelper _databaseHelper;
   RxMap<String, dynamic> todoList = <String, dynamic>{}.obs;
+  RxList listOfMaps = [].obs;
 
   @override
   void onInit() {
@@ -39,4 +41,14 @@ class TodoController extends GetxController {
    }
   }
 
+  Future<void> getAllTodo() async {
+    try {
+      final database = await _databaseHelper.database;
+
+      final rows = await _databaseHelper.queryAllRows(database);
+      listOfMaps.addAll(rows);
+    } catch (e) {
+      CustomSnackbar.show('Warning', 'Something went wrong');
+    }
+  }
 }
