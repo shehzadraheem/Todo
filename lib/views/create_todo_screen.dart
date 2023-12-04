@@ -35,8 +35,10 @@ class CreateTodoScreen extends GetView<TodoController> {
               height: 34,
             ),
             ElevatedButton(
-                onPressed: (){
-                  controller.insertTodo();
+                onPressed: () async {
+                  controller.insertTodo().then((value){
+                    Navigator.pop(context);
+                  });
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.deepPurple,
