@@ -5,8 +5,29 @@ import 'package:todo_flutter_yt/utils/constant/app_text_constant.dart';
 import 'package:todo_flutter_yt/widgets/todo_text_field.dart';
 
 
-class CreateTodoScreen extends GetView<TodoController> {
-  const CreateTodoScreen({super.key});
+class CreateTodoScreen extends StatefulWidget {
+  const CreateTodoScreen({super.key, this.title, this.description, this.id, this.isUpdate = false});
+  final String? title;
+  final String? description;
+  final int? id;
+  final bool isUpdate;
+
+  @override
+  State<CreateTodoScreen> createState() => _CreateTodoScreenState();
+}
+
+class _CreateTodoScreenState extends State<CreateTodoScreen> {
+
+  final controller = Get.find<TodoController>();
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.isUpdate) {
+      controller.titleController.text = widget.title ?? '';
+      controller.descriptionController.text = widget.description ?? '';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,15 +57,21 @@ class CreateTodoScreen extends GetView<TodoController> {
             ),
             ElevatedButton(
                 onPressed: () async {
-                  controller.insertTodo().then((value){
-                    Navigator.pop(context);
-                  });
+                  if (widget.isUpdate) {
+                    controller.updateTodo(widget.id ?? -1).then((value){
+                      Navigator.pop(context);
+                    });
+                  } else {
+                    controller.insertTodo().then((value){
+                      Navigator.pop(context);
+                    });
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.deepPurple,
                   padding: const EdgeInsets.symmetric(vertical: 18)
                 ),
-                child: const Text(create, style: TextStyle(color: Colors.white),),
+                child: Text(widget.isUpdate ? update : create, style: const TextStyle(color: Colors.white),),
             ),
           ],
         ),
