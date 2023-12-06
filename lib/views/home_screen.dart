@@ -127,6 +127,7 @@ class HomeBody extends GetView<TodoController> {
                      ),
                    ),
                    confirmDismiss: (direction) async {
+                     /// Delete
                      if (direction == DismissDirection.endToStart) {
                        final bool res = await showDialog(
                            context: context,
@@ -160,6 +161,7 @@ class HomeBody extends GetView<TodoController> {
                            });
                        return res;
                      } else {
+                       /// Edit
                        Navigator.push(context, MaterialPageRoute (
                          builder: (BuildContext context) =>
                              CreateTodoScreen(

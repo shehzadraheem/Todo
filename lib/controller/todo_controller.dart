@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:todo_flutter_yt/helper/sqlite_database_helper.dart';
@@ -81,7 +79,6 @@ class TodoController extends GetxController {
       final result = await _databaseHelper.update(todo, database);
 
       int index = todoList.indexWhere((element) => element[columnId] == id);
-      log('${todoList.length}');
       todoList[index] = todo;
 
       CustomSnackbar.show('Alert', 'Todo updated successfully');
