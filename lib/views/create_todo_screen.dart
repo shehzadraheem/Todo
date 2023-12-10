@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:todo_flutter_yt/controller/todo_controller.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_flutter_yt/cubit/todo_cubit.dart';
 import 'package:todo_flutter_yt/utils/constant/app_text_constant.dart';
 import 'package:todo_flutter_yt/widgets/todo_text_field.dart';
 
 
-class CreateTodoScreen extends StatefulWidget {
+class CreateTodoScreen extends StatelessWidget {
   const CreateTodoScreen({super.key, this.title, this.description, this.id, this.isUpdate = false});
   final String? title;
   final String? description;
@@ -13,24 +13,13 @@ class CreateTodoScreen extends StatefulWidget {
   final bool isUpdate;
 
   @override
-  State<CreateTodoScreen> createState() => _CreateTodoScreenState();
-}
-
-class _CreateTodoScreenState extends State<CreateTodoScreen> {
-
-  final controller = Get.find<TodoController>();
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.isUpdate) {
-      controller.titleController.text = widget.title ?? '';
-      controller.descriptionController.text = widget.description ?? '';
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final todoCubit = context.read<TodoCubit>();
+    if (isUpdate) {
+      todoCubit.titleController.text = title ?? '';
+      todoCubit.descriptionController.text = description ?? '';
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(createTodo),
@@ -41,14 +30,14 @@ class _CreateTodoScreenState extends State<CreateTodoScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             TodoTextField(
-                controller: controller.titleController,
+                controller: todoCubit.titleController,
                 hintText: addTitle
             ),
             const SizedBox(
               height: 24,
             ),
             TodoTextField(
-                controller: controller.descriptionController,
+                controller: todoCubit.descriptionController,
                 hintText: addDescription,
                 maxLines: 5,
             ),
@@ -57,12 +46,12 @@ class _CreateTodoScreenState extends State<CreateTodoScreen> {
             ),
             ElevatedButton(
                 onPressed: () async {
-                  if (widget.isUpdate) {
-                    controller.updateTodo(widget.id ?? -1).then((value){
+                  if (isUpdate) {
+                    todoCubit.updateTodo(id ?? -1).then((value){
                       Navigator.pop(context);
                     });
                   } else {
-                    controller.insertTodo().then((value){
+                    todoCubit.insertTodo().then((value){
                       Navigator.pop(context);
                     });
                   }
@@ -71,7 +60,7 @@ class _CreateTodoScreenState extends State<CreateTodoScreen> {
                   backgroundColor: Colors.deepPurple,
                   padding: const EdgeInsets.symmetric(vertical: 18)
                 ),
-                child: Text(widget.isUpdate ? update : create, style: const TextStyle(color: Colors.white),),
+                child: Text(isUpdate ? update : create, style: const TextStyle(color: Colors.white),),
             ),
           ],
         ),
